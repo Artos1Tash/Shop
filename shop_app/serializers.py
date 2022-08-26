@@ -24,7 +24,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('__all__', 'category_name', 'owner_name', 'comments', 'likes_count')
+        fields = ('id', 'category_name', 'description', 'image', 'owner_name', 'delivery', 'comments', 'likes_count')
         extra_kwargs = {'user': {'read_only': True}}
 
 
