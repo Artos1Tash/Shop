@@ -77,6 +77,18 @@ DATABASES = {
 }
 
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'habr_db',
+        'USER': 'habrpguser',
+        'PASSWORD': 'pgpwd4habr',
+        'HOST': 'db',
+        'PORT': '5435:5435',
+    }
+}
+
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
