@@ -6,20 +6,18 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
-
-from shop_app.models import Product, Category, ProductComment, ProductLike
+from shop_app.models import Product, Category, ProductComment, ProductLike, Cart, Cart_product
 from shop_app.permissions import ProductPermission
-from shop_app.serializers import ProductSerializer, CategorySerializer, ProductCommentSerializer, ProductDetailSerializer
+from shop_app.serializers import ProductSerializer, CategorySerializer, ProductCommentSerializer, ProductDetailSerializer, CartSerializer, CartProductSerializer
 
 
 class ProductViewSet(ModelViewSet):
-    # queryset = Product.objects.all()
     serializer_class = ProductSerializer
     serializer_classes = {
         'retrieve': ProductDetailSerializer,
     }
     lookup_field = 'pk'
-    # permission_classes = (ProductPermission,)
+    permission_classes = (ProductPermission,)
     # permission_classes = [permissions.IsAuthenticated]
     queryset = Product.objects.all()
 
@@ -93,3 +91,14 @@ class ProductLikeViewSet(APIView):
             ProductLike.objects.create(product_id=product_pk, user=request.user)
             return Response({'success': 'liked'})
 
+
+
+class CartView(ModelViewSet):
+    permissions_classes = [permissions.IsAuthenticated]
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+
+class CartProductView(ModelViewSet):
+    permissions_classes = [permissions.IsAuthenticated]
+    queryset = Cart_product.objects.all()
+    serializer_class = CartProductSerializer
