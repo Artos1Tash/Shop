@@ -9,6 +9,5 @@
 5. python manage.py migrate
 
 Развернуть через Docker
-1. docker build .
-2. docker-compose up -d --build
-3. docker-compose logs -f
+1. docker-compose up -d --build
+2. docker-compose logs -f
