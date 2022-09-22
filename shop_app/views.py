@@ -1,14 +1,15 @@
-from django.contrib.auth.models import User
-from django.db.models import F, Count, Prefetch
+from django.db.models import F, Count
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, permissions
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
-from shop_app.models import Product, Category, ProductComment, ProductLike, Cart, Cart_product
+from shop_app.models import Product, Category, ProductComment, ProductLike\
+     , Cart, Cart_product
 from shop_app.permissions import ProductPermission
-from shop_app.serializers import ProductSerializer, CategorySerializer, ProductCommentSerializer, ProductDetailSerializer, CartSerializer, CartProductSerializer
+from shop_app.serializers import ProductSerializer, CategorySerializer, ProductCommentSerializer, ProductDetailSerializer\
+     , CartSerializer, CartProductSerializer
 
 
 class ProductViewSet(ModelViewSet):
@@ -17,15 +18,14 @@ class ProductViewSet(ModelViewSet):
         'retrieve': ProductDetailSerializer,
     }
     lookup_field = 'pk'
-    permission_classes = (ProductPermission,)
-    # permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = (ProductPermission,)
+    permission_classes = [permissions.AllowAny]
     queryset = Product.objects.all()
 
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['category', 'price']
     search_fields = ['name', 'description']
     ordering_fields = ['id', 'price']
-
 
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action, self.serializer_class)
@@ -34,23 +34,15 @@ class ProductViewSet(ModelViewSet):
         queryset = Product.objects.annotate(
             category_name=F('category__name'),
             owner_name=F('user__username'),
-            likes_count=Count('likes')
+            likes_count=Count('like__product')
         ).order_by('-id')
         return queryset
-
-    # def get_queryset(self):
-    #     queryset = Product.objects.prefetch_related(
-    #         'category',
-    #         Prefetch('user', queryset=User.objects.only('username', 'id'))
-    #     ).order_by('-id')
-    #     return queryset
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
 
 class CategoryViewSet(ModelViewSet):
-    # queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
     def get_queryset(self):
@@ -77,9 +69,10 @@ class CommentView(ModelViewSet):
                         headers=headers)
 
 
-class ProductLikeViewSet(APIView):
+class ProductLikeView(APIView):
+    # product_pk = Product.object.get()
 
-    def get(request, product_pk):
+    def get(self, request, product_pk):
         created = ProductLike.objects.filter(product_id=product_pk, user=request.user).exists()
         if created:
             ProductLike.objects.filter(
@@ -92,11 +85,24 @@ class ProductLikeViewSet(APIView):
             return Response({'success': 'liked'})
 
 
+    # def get(self, request, product_pk):
+    #     created = ProductLike.objects.filter(product_id=product_pk, user=request.user).exists()
+    #     if created:
+    #         ProductLike.objects.filter(
+    #             product_id=product_pk,
+    #             user=request.user
+    #         ).delete()
+    #         return Response({'success': 'unliked'})
+    #     else:
+    #         ProductLike.objects.create(product_id=product_pk, user=request.user)
+    #         return Response({'success': 'liked'})
+
 
 class CartView(ModelViewSet):
     permissions_classes = [permissions.IsAuthenticated]
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
+
 
 class CartProductView(ModelViewSet):
     permissions_classes = [permissions.IsAuthenticated]

@@ -18,6 +18,7 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
+
 INSTALLED_APPS = [
     'jazzmin',
     'django.contrib.admin',
@@ -35,7 +36,6 @@ INSTALLED_APPS = [
 
     'shop_app',
     'auth_app',
-
 ]
 
 MIDDLEWARE = [
@@ -77,16 +77,16 @@ DATABASES = {
 }
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'habr_db',
-        'USER': 'habrpguser',
-        'PASSWORD': 'pgpwd4habr',
-        'HOST': 'db',
-        'PORT': '5435:5435',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'habr_db',
+#         'USER': 'habrpguser',
+#         'PASSWORD': 'pgpwd4habr',
+#         'HOST': 'db',
+#         'PORT': '5435:5435',
+#     }
+# }
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -133,11 +133,10 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
+    # 'DEFAULT_AUTHENTICATION_CLASSES': [
+    #     'rest_framework.authentication.TokenAuthentication',
+    #     'rest_framework_simplejwt.authentication.JWTAuthentication',
+    # ],
 }
 
 SIMPLE_JWT = {

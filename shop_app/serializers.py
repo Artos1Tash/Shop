@@ -1,4 +1,5 @@
-from shop_app.models import Category, Product, ProductLike, ProductComment, Cart, Cart_product
+from shop_app.models import Category, Product, ProductLike, ProductComment, Cart, Cart_product \
+    # , Cart, Cart_product
 from rest_framework import serializers
 
 
@@ -33,6 +34,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
         model = Category
         fields = '__all__'
+
 
 class ProductLikeSerializer(serializers.ModelSerializer):
     class Meta:

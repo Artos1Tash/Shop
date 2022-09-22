@@ -18,6 +18,7 @@ class Product(models.Model):
     def __str__(self):
         return f'{self.name}'
 
+
 class Category(models.Model):
     name = models.CharField(max_length=128)
 
@@ -36,15 +37,16 @@ class ProductComment(models.Model):
 
 
 class ProductLike(models.Model):
-    product = models.ForeignKey(Product, models.CASCADE, related_name='likes')
+    product = models.ForeignKey(Product, models.CASCADE, related_name='like')
     user = models.ForeignKey(User, models.SET_NULL, null=True)
+
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='user')
-    # cart_products = models.ForeignKey('shop_app.Cart_product', on_delete=models.CASCADE, null=True, blank=True, related_name='product')
 
     def __str__(self):
-        return f'{self.user.first_name}'
+        return f'{self.user}'
+
 
 class Cart_product(models.Model):
     cart_id = models.ForeignKey(Cart, on_delete=models.CASCADE, blank=True, null=True, related_name='cart')
