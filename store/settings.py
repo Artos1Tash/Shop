@@ -36,6 +36,7 @@ INSTALLED_APPS = [
 
     'shop_app',
     'auth_app',
+    'send_email'
 ]
 
 MIDDLEWARE = [
@@ -325,3 +326,13 @@ JAZZMIN_SETTINGS = {
     # Add a language dropdown into the admin
     # "language_chooser": True,
 }
+
+
+# CELERY_RESULT_BACKEND = 'django-db'
+# CELERY_CACHE_BACKEND = 'django-cache'
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+#         'LOCATION': 'my_cache_table',
+#     }
+# }

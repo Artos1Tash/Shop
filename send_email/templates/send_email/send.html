@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="POST" enctype="application/x-www-form-urlencoded">
+        {% csrf_token %}
+        <input type="text" name="message" >
+        <button>Отправить</button>
+        <input type="text" name="message" >
+        <button>Отправить</button>
+
+    </form>
+
+{% endblock %}

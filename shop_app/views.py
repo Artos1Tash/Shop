@@ -1,4 +1,5 @@
 from django.db.models import F, Count
+from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, permissions
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -108,3 +109,7 @@ class CartProductView(ModelViewSet):
     permissions_classes = [permissions.IsAuthenticated]
     queryset = Cart_product.objects.all()
     serializer_class = CartProductSerializer
+
+
+def homepage(request):
+    return render(request, 'index.html', {"hello": "world!"})
