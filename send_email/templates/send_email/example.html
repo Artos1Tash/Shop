@@ -1,0 +1,60 @@
+{% block content %}
+<div class="post_detail">
+    <h1>{{ post.title }}</h1>
+    <h4>{{ post.description }}</h4>
+    <img class="post_image" src="{{ post.image.url }}" alt="no image">
+    <p>{{ post.body }}</p>
+    <p>{{ post.author }}, {{ post.created }}</p>
+    <p>likes {{ post.likes.count }}</p>
+
+    {% if request.user not in post.likes.all %}
+        <button class="btn btn-success">
+            <a href="{% url 'like' post.pk %}" style="color: white">Like</a>
+        </button>
+    {% else %}
+        <button class="btn btn-danger">
+            <a href="{% url 'like' post.pk %}" style="color: white">Unlike</a>
+        </button>
+    {% endif %}
+
+
+    {% if request.user == post.author %}
+    <button class="btn btn-warning">
+        <a href="{% url 'post_edit' post.pk %}">Edit</a>
+    </button>
+    <button class="btn btn-danger">
+        <a href="{% url 'post_delete' post.pk %}">Delete</a>
+    </button>
+    {% endif %}
+
+    {% if request.user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="btn btn-success">
+                Comment!
+            </button>
+        </form>
+    {% else %}
+        <p><a href="{% url 'login' %}">Login</a> to comment!</p>
+    {% endif %}
+
+    {% if comments %}
+        {% for comment in comments %}
+            <p>{{ comment.content }}</p>
+            <p>{{ comment.author }}</p>
+            {% if request.user.id == comment.author.id %}
+                <a href="{% url 'comment_edit' post.pk comment.pk %}">Edit</a>
+            {% endif %}
+            {% if request.user.id == comment.author.id %}
+                <a href="{% url 'comment_delete' post.pk comment.pk %}">Delete</a>
+            {% endif %}
+            <hr>
+        {% endfor %}
+    {% else %}
+        <p>No comments yet!</p>
+    {% endif %}
+
+    <h2><a href="{% url 'post_list' %}">Back to posts</a></h2>
+</div>
+{% endblock %}

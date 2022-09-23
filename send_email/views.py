@@ -12,6 +12,7 @@ class SendView(View):
         return render(request, self.template_name)
 
     def post(self, request):
+        print(request)
         s = SendEmail()
         # message = request.FILES["message"]
         # s.text = message
