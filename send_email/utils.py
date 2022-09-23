@@ -3,7 +3,7 @@ from email.mime.text import MIMEText
 
 
 def send_email(message):
-    sender = 'strong.willed254@gmail.com'
+    sender = ''
     # password = os.getenv("")
     password = 'jppemvgwasrwhkhh'
     reciever = ''
